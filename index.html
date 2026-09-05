@@ -33,12 +33,13 @@ src="https://www.facebook.com/tr?id=1058652086714519&ev=PageView&noscript=1" /><
     --stamp:#8C3B2E;
     --surface:#FFFFFF;
     --focus:#2F5D8A;
+    --alert:#D32F2F;
     --font-body:'Malgun Gothic','맑은 고딕','Apple SD Gothic Neo',-apple-system,sans-serif;
     --font-display:'Malgun Gothic','맑은 고딕','Apple SD Gothic Neo',-apple-system,sans-serif;
   }
   :root[data-theme="dark"]{
     --paper:#FFFFFF; --paper-line:#E4DED0; --ink:#1E2A44; --ink-soft:#5A6479;
-    --seal:#A8752E; --seal-deep:#7C551F; --stamp:#8C3B2E; --surface:#FFFFFF; --focus:#2F5D8A;
+    --seal:#A8752E; --seal-deep:#7C551F; --stamp:#8C3B2E; --surface:#FFFFFF; --focus:#2F5D8A; --alert:#D32F2F;
   }
 
   *{box-sizing:border-box;}
@@ -73,8 +74,18 @@ src="https://www.facebook.com/tr?id=1058652086714519&ev=PageView&noscript=1" /><
     font:inherit; font-size:16px; color:var(--ink); padding:8px 2px; border-radius:0;
     transition:border-color .15s ease;
   }
+  .field select{
+    width:100%; border:none; border-bottom:1.5px solid var(--paper-line); background:transparent;
+    font:inherit; font-size:16px; color:var(--ink); padding:8px 2px; border-radius:0;
+    transition:border-color .15s ease; cursor:pointer;
+  }
+  .field select:invalid{ color:color-mix(in srgb, var(--ink-soft) 65%, transparent); }
   .field input::placeholder{ color:color-mix(in srgb, var(--ink-soft) 65%, transparent); }
-  .field input:focus{ border-bottom-color:var(--seal); }
+  .field input:focus, .field select:focus{ border-bottom-color:var(--seal); }
+
+  .radio-group{ display:flex; gap:24px; padding-top:2px; }
+  .radio-group label{ display:flex; align-items:center; gap:7px; font-size:15px; font-weight:400; color:var(--ink); cursor:pointer; margin-bottom:0; }
+  .radio-group input[type="radio"]{ width:18px; height:18px; accent-color:var(--seal); cursor:pointer; margin:0; }
 
   .consent{ display:flex; gap:12px; align-items:flex-start; padding:14px 0; border-top:1px solid var(--paper-line); }
   .consent input[type="checkbox"]{ flex:none; width:19px; height:19px; margin-top:2px; accent-color:var(--seal); cursor:pointer; }
@@ -108,6 +119,11 @@ src="https://www.facebook.com/tr?id=1058652086714519&ev=PageView&noscript=1" /><
   .submit-btn:disabled{ opacity:.45; cursor:not-allowed; }
   .privacy-line{ text-align:center; font-size:12px; color:var(--ink-soft); margin-top:12px; }
 
+  .legal-notice{
+    color:var(--alert); font-size:13px; font-weight:700; text-align:center;
+    line-height:1.7; margin:16px 0 0; padding-top:14px; border-top:1px dashed color-mix(in srgb, var(--alert) 35%, transparent);
+  }
+
   .result-msg{
     display:none; margin-top:18px; padding:14px 16px; border-radius:2px; font-size:14px;
     border:1px solid var(--paper-line); background:#FAF8F3;
@@ -130,7 +146,7 @@ src="https://www.facebook.com/tr?id=1058652086714519&ev=PageView&noscript=1" /><
         <h1>무료 상담 신청서</h1>
         <span>접수 후 순차 연락</span>
       </div>
-      <p class="form-desc">아래 세 가지만 남겨주시면 담당 컨설턴트가 확인 후 연락드립니다.</p>
+      <p class="form-desc">아래 항목을 남겨주시면 담당 컨설턴트가 확인 후 연락드립니다.</p>
 
       <div class="field">
         <label for="f-biz">사업자명<span class="req">*</span></label>
@@ -144,6 +160,39 @@ src="https://www.facebook.com/tr?id=1058652086714519&ev=PageView&noscript=1" /><
         <label for="f-tel">전화번호<span class="req">*</span></label>
         <input type="tel" id="f-tel" name="phone" placeholder="010-0000-0000" required autocomplete="tel" pattern="[0-9\-]{9,13}" />
       </div>
+      <div class="field">
+        <label for="f-biznum">사업자번호<span class="req">*</span></label>
+        <input type="text" id="f-biznum" name="bizNumber" placeholder="000-00-00000" required autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="f-industry">업종<span class="req">*</span></label>
+        <input type="text" id="f-industry" name="industry" placeholder="예: 도소매업, 제조업, 서비스업" required autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="f-credit">신용점수<span class="req">*</span></label>
+        <select id="f-credit" name="creditScore" required>
+          <option value="" disabled selected>선택해주세요</option>
+          <option value="900점 이상">900점 이상</option>
+          <option value="800점 이상">800점 이상</option>
+          <option value="700점 이상">700점 이상</option>
+          <option value="600점 이상">600점 이상</option>
+          <option value="600점 이하">600점 이하</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>세금 체납<span class="req">*</span></label>
+        <div class="radio-group" role="radiogroup" aria-label="세금 체납 여부">
+          <label><input type="radio" name="tax" value="있음" /> 있음</label>
+          <label><input type="radio" name="tax" value="없음" /> 없음</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>금융권 연체<span class="req">*</span></label>
+        <div class="radio-group" role="radiogroup" aria-label="금융권 연체 여부">
+          <label><input type="radio" name="findefault" value="있음" /> 있음</label>
+          <label><input type="radio" name="findefault" value="없음" /> 없음</label>
+        </div>
+      </div>
 
       <div class="consent">
         <input type="checkbox" id="c-privacy" required />
@@ -153,7 +202,7 @@ src="https://www.facebook.com/tr?id=1058652086714519&ev=PageView&noscript=1" /><
         </label>
       </div>
       <div class="consent-detail" id="privacy-detail">
-        수집 항목: 사업자명, 이름, 전화번호 · 수집 목적: 무료 상담 및 서비스 안내 · 보유 기간: 상담 완료 후 파기 (관계 법령에 따른 보관 의무가 있는 경우 해당 기간까지 보관) · 동의를 거부할 권리가 있으며, 거부 시 상담 신청이 제한될 수 있습니다.
+        수집 항목: 사업자명, 이름, 전화번호, 사업자번호, 업종, 신용점수, 세금 체납 여부, 금융권 연체 여부 · 수집 목적: 무료 상담 및 서비스 안내 · 보유 기간: 상담 완료 후 파기 (관계 법령에 따른 보관 의무가 있는 경우 해당 기간까지 보관) · 동의를 거부할 권리가 있으며, 거부 시 상담 신청이 제한될 수 있습니다.
       </div>
 
       <div class="fee-notice">
@@ -168,6 +217,11 @@ src="https://www.facebook.com/tr?id=1058652086714519&ev=PageView&noscript=1" /><
         <button type="submit" class="submit-btn" id="submit-btn" disabled>무료 상담 신청하기</button>
         <p class="privacy-line">신청 즉시 결제나 계약이 진행되지 않습니다.<br />상담 후 진행 여부를 직접 결정하실 수 있습니다.</p>
       </div>
+
+      <p class="legal-notice">
+        개인회생 및 새출발기금 6개월 이상 납부시 신청가능<br />
+        파산 면책시 신청가능
+      </p>
 
       <div class="result-msg" id="result-msg"></div>
     </form>
@@ -194,6 +248,11 @@ src="https://www.facebook.com/tr?id=1058652086714519&ev=PageView&noscript=1" /><
   var bizI = document.getElementById('f-biz');
   var nameI = document.getElementById('f-name');
   var telI = document.getElementById('f-tel');
+  var bizNumI = document.getElementById('f-biznum');
+  var industryI = document.getElementById('f-industry');
+  var creditSel = document.getElementById('f-credit');
+  var taxRadios = document.querySelectorAll('input[name="tax"]');
+  var finRadios = document.querySelectorAll('input[name="findefault"]');
   var resultMsg = document.getElementById('result-msg');
 
   // 넥스트비즈컨설팅 구글시트 + 텔레그램 연동 Apps Script 웹훅 (nexus-biz-consulting 프로젝트와 동일한 엔드포인트)
@@ -208,12 +267,25 @@ src="https://www.facebook.com/tr?id=1058652086714519&ev=PageView&noscript=1" /><
     return utm;
   }
 
+  function radioValue(nodeList){
+    for (var i = 0; i < nodeList.length; i++){
+      if (nodeList[i].checked) return nodeList[i].value;
+    }
+    return '';
+  }
+
   function validate(){
-    var ok = bizI.value.trim() && nameI.value.trim() && telI.value.trim() && privacyCk.checked && feeCk.checked;
+    var ok = bizI.value.trim() && nameI.value.trim() && telI.value.trim()
+      && bizNumI.value.trim() && industryI.value.trim() && creditSel.value
+      && radioValue(taxRadios) && radioValue(finRadios)
+      && privacyCk.checked && feeCk.checked;
     submitBtn.disabled = !ok;
   }
-  [bizI, nameI, telI, privacyCk, feeCk].forEach(function(el){
+  [bizI, nameI, telI, bizNumI, industryI, creditSel, privacyCk, feeCk].forEach(function(el){
     el.addEventListener('input', validate);
+    el.addEventListener('change', validate);
+  });
+  [].concat(Array.prototype.slice.call(taxRadios), Array.prototype.slice.call(finRadios)).forEach(function(el){
     el.addEventListener('change', validate);
   });
 
@@ -232,7 +304,12 @@ src="https://www.facebook.com/tr?id=1058652086714519&ev=PageView&noscript=1" /><
       source: '메타광고-정책자금',
       company: bizI.value.trim(),
       name: nameI.value.trim(),
-      phone: telI.value.trim()
+      phone: telI.value.trim(),
+      bizNumber: bizNumI.value.trim(),
+      industry: industryI.value.trim(),
+      creditScore: creditSel.value,
+      taxDelinquent: radioValue(taxRadios),
+      financialDefault: radioValue(finRadios)
     };
     Object.assign(payload, getUtmParams());
 
